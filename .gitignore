@@ -1,0 +1,3 @@
+*.retry
+*.log
+.pytest_cache/
