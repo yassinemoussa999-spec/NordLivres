@@ -1,8 +1,7 @@
 ---
 - name: Afficher les informations système
   hosts:
-    - dev
-    - prod
+    - all
   become: true
   gather_facts: true
 
