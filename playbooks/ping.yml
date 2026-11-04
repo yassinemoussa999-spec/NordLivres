@@ -1,0 +1,12 @@
+---
+- name: Afficher les informations système
+  hosts:
+    - dev
+    - prod
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Afficher les informations système
+      debug:
+        msg: "Nom d'hôte : {{ ansible_hostname }} | Système d'exploitation : {{ ansible_distribution }} {{ ansible_distribution_version }} | mémoire totale : {{ansible_memtotal_mb}}"
