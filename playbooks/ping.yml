@@ -8,4 +8,4 @@
   tasks:
     - name: Afficher les informations système
       debug:
-        msg: "Nom d'hôte : {{ ansible_hostname }} | Système d'exploitation : {{ ansible_distribution }} {{ ansible_distribution_version }} | mémoire totale : {{ansible_memtotal_mb}}"
+        msg: "Nom d'hôte : {{ ansible_hostname }} | Système d'exploitation : {{ ansible_distribution }} {{ ansible_distribution_version }} | mémoire totale : {{ansible_memtotal_mb}} | Environnement : {{ environnement }}"

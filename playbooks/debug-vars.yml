@@ -1,0 +1,9 @@
+---
+- name: Afficher les variables des serveurs
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Afficher les variables des serveurs
+      debug:
+        msg: "Nom d'hôte : {{ ansible_hostname }} | Environnement : {{ environnement }} | Rôle du serveur : {{ role_serveur }}"
