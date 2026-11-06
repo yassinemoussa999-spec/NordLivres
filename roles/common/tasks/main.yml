@@ -1,0 +1,59 @@
+---
+# tasks file for roles/common
+- name: Mettre à jour le caache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Instaler les paquets de base
+  ansible.builtin.apt:
+    name:
+      - acl
+      - curl
+      - git
+      - rsync
+      - python3-venv
+      - python3-pip
+      - chrony
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: créer un groupe d'administration et des utilisateurs
+  ansible.builtin.group:
+    name: admin
+
+- name: créer des utilisateurs
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | password_hash('sha512') }}"
+    groups: admin
+    shell: /bin/bash
+    append: yes
+  loop: "{{ users }}" 
+  no_log: true
+
+- name: Afficher quelques informations sur le serveur
+  ansible.builtin.template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - motd
+     
+  
+- name: detecter si le serveur nécessite un redémarrage
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  register: reboot_check
+  tags:
+    - reboot
+    
+- name: afficher un message si le serveur nécessite un redémarrage
+  ansible.builtin.debug:
+    msg: "Le serveur {{ ansible_hostname }} nécessite un redémarrage."
+  when: reboot_check.stat.exists
+  tags:
+    - reboot
